@@ -26,6 +26,7 @@ df_drivers=pd.concat([df_drivers,pd.json_normalize(df_drivers.name, max_level=1)
 df_races.drop(['url','time','date'], axis=1, inplace=True)
 df_drivers.drop(['name','url','dob','code','number'], axis=1, inplace=True)
 df_results.drop(['position','fastestLapTime','time','milliseconds','fastestLapSpeed','fastestLap','grid','positionText'], axis=1, inplace=True)
+df_results['points']=df_results.points.astype(int)
 
 SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:toledin1@localhost/db_f1"
 
