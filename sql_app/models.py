@@ -22,23 +22,26 @@ class Driver(Base):
     forename     = Column(String, index=True)
     surname      = Column(String, unique=True, index=True)
 
+    race=relationship("Race")
+
+
 class Result(Base):
     __tablename__ = "result"
 
     resultId      = Column(Integer, primary_key=True, index=True)  
-    raceId        = Column(Integer,ForeignKey=True, unique=True, index=True)  
-    driverId      = Column(Integer,ForeignKey=True, unique=True, index=True) 
-    constructorId = Column(Integer,ForeignKey=True, unique=True, index=True)  
+    raceId        = Column(Integer,ForeignKey("race.raceId"), unique=True, index=True)  
+    driverId      = Column(Integer,ForeignKey("driver.driverId"), unique=True, index=True) 
+    constructorId = Column(Integer,ForeignKey("cosntructor.constructorId"), unique=True, index=True)  
     number        = Column(String, unique=True, index=True) 
     positionOrder = Column(Integer, index=True)  
     points        = Column(float, index=True)
     laps          = Column(Integer, index=True)  
     rank          = Column(String, index=True)
-    statusId      = Column(Integer,ForeignKey=True, index=True)
+    statusId      = Column(Integer, index=True)
 
-    Result = relationship("Race", back_populates="raceId")
-    Result = relationship("Constructor", back_populates="constructorId")
-    Result = relationship("Driver", back_populates="driverId")
+    diver = relationship("Driver")
+    constructor = relationship("Constructor")
+    race=relationship("Race")
 
 
 class Race(Base):
@@ -47,10 +50,10 @@ class Race(Base):
     raceId     = Column(Integer, primary_key=True, index=True)  
     year       = Column(Integer, index=True)
     round      = Column(Integer, index=True)
-    circuitId  = Column(Integer,ForeignKey=True, unique=True, index=True)  
+    circuitId  = Column(Integer,ForeignKey("circuit.circuitId"), unique=True, index=True)  
     name       = Column(String, index=True) 
 
-    Race = relationship("Circuit", back_populates="circuitId")
+    circuit=relationship("Circuit")
 
 
 class Constructor(Base):
@@ -60,3 +63,4 @@ class Constructor(Base):
     name            = Column(String, index=True)
     nationality     = Column(String, index=True)
 
+    result = relationship("Result")
